@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prodyousif — Composer, Sound Designer & Producer</title>
+<meta name="description" content="Film composer, music producer and sound designer. Orchestral scoring, commercials, sound design and Middle Eastern fusion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Cinzel:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: { ink:'#0c0c10', panel:'#14141a', line:'#26262f', gold:'#c9a96a', goldsoft:'#e6d3a3', mute:'#b6b6c4', wine:'#6b1d2e' },
+    fontFamily: { display:['"Playfair Display"','Georgia','serif'], logo:['Cinzel','Georgia','serif'], body:['Manrope','system-ui','sans-serif'] }
+  } }
+}
+</script>
+<style id="mine">
+  html { scroll-padding-top: 76px; }
+  body { background:#0c0c10; color:#f1efe9; font-family:Manrope,system-ui,sans-serif; font-size:17px; line-height:1.7; }
+  h1,h2,h3 { letter-spacing:-0.01em; }
+  ::selection { background:#c9a96a; color:#0c0c10; }
+  :focus-visible { outline:2px solid #c9a96a; outline-offset:3px; }
+  .grain::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.06;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .tab[aria-selected="true"] { background:#c9a96a; color:#0c0c10; border-color:#c9a96a; }
+  .track.playing { background:#1b1b23; border-color:#c9a96a; }
+  .track.playing .bar { background:#c9a96a; }
+  .nav-link { position:relative; }
+  .nav-link::after { content:""; position:absolute; left:0; bottom:-6px; height:1px; width:0; background:#c9a96a; transition:width .25s; }
+  .nav-link:hover::after, .nav-link.active::after { width:100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } * { transition:none !important; } }
+  /* ===== INTRO ===== */
+  #intro { transition:opacity .9s ease, visibility .9s; }
+  #intro.out { opacity:0; visibility:hidden; }
+  .ch { display:inline-block; opacity:0; filter:blur(16px); transform:translateY(24px) scale(1.2);
+        animation:chIn 1s cubic-bezier(.2,.7,.2,1) forwards; animation-delay:calc(var(--i)*95ms + 500ms); }
+  @keyframes chIn { to { opacity:1; filter:blur(0); transform:none; } }
+  .iline { width:0; height:1px; background:linear-gradient(90deg,transparent,#c9a96a,transparent); animation:lineGrow 1.4s ease forwards 1.5s; }
+  @keyframes lineGrow { to { width:min(360px,70vw); } }
+  .isub { opacity:0; animation:fadeUp 1s ease forwards 2.1s; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px);} to { opacity:1; transform:none; } }
+  .ieq { position:absolute; inset:auto 0 0 0; height:42%; display:flex; align-items:flex-end; justify-content:center; gap:6px; opacity:.5; }
+  .ieq i { width:5px; background:linear-gradient(to top,#c9a96a,transparent); transform-origin:bottom; transform:scaleY(.05);
+           animation:eq 1.6s ease-in-out infinite; animation-delay:calc(var(--k)*70ms); height:100%; }
+  @keyframes eq { 0%,100% { transform:scaleY(.06);} 50% { transform:scaleY(var(--h)); } }
+  .iglow { position:absolute; width:620px; height:620px; max-width:120vw; border-radius:50%; background:radial-gradient(circle,rgba(201,169,106,.16),transparent 65%); animation:pulse 3s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform:scale(.9); opacity:.6;} 50% { transform:scale(1.1); opacity:1;} }
+  @media (prefers-reduced-motion: reduce) { .ch,.isub { animation-duration:.01s; animation-delay:0s; } .ieq i,.iglow { animation:none; } }
+  .inp{width:100%;background:#0c0c10;border:1px solid #26262f;border-radius:8px;padding:10px 12px;color:#f1efe9;font-size:15px}
+  .inp:focus{border-color:#c9a96a;outline:none}
+  .btn{background:#c9a96a;color:#0c0c10;font-weight:600;padding:10px 18px;border-radius:999px}
+  .btn2{border:1px solid #3a3a46;padding:8px 14px;border-radius:999px;color:#d4d4de}
+  .lbl{display:block;font-size:13px;color:#b6b6c4;margin:14px 0 6px}
+</style>
+</head>
+<body class="font-body antialiased">
+
+<!-- INTRO -->
+<div id="intro" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden">
+  <div class="iglow"></div>
+  <div class="ieq" id="ieq" aria-hidden="true"></div>
+  <h1 id="introName" class="relative font-logo font-bold text-[2.1rem] sm:text-6xl md:text-8xl text-goldsoft tracking-[0.18em] sm:tracking-[0.28em] pl-[0.18em]" style="text-shadow:0 0 40px rgba(201,169,106,.35)" aria-label="Prodyousif"></h1>
+  <div class="iline mt-8 relative"></div>
+  <p class="isub relative mt-6 text-mute text-xs sm:text-sm tracking-[0.35em] uppercase">Composer · Sound Designer · Producer</p>
+  <button id="introSkip" class="absolute bottom-8 text-xs text-mute/70 hover:text-goldsoft transition tracking-widest">SKIP</button>
+</div>
+
+<!-- NAV -->
+<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-colors duration-300">
+  <div class="max-w-6xl mx-auto px-6 h-[68px] flex items-center justify-between">
+    <a href="#hero" class="font-logo text-xl text-goldsoft tracking-[0.28em] uppercase" id="logo"><span id="adminKey">P</span>rodyousif</a>
+    <nav class="hidden md:flex items-center gap-8 text-sm text-mute" aria-label="Main">
+      <a class="nav-link hover:text-white transition" href="#showreel">Showreel</a>
+      <a class="nav-link hover:text-white transition" href="#work">Work</a>
+      <a class="nav-link hover:text-white transition" href="#about">About</a>
+      <a href="#contact" class="border border-gold/60 text-goldsoft px-4 py-2 rounded-full hover:bg-gold hover:text-ink transition">Get in touch</a>
+    </nav>
+    <button id="menuBtn" class="md:hidden p-2 text-goldsoft" aria-label="Open menu" aria-expanded="false">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden bg-ink/95 backdrop-blur border-t border-line px-6 py-5 space-y-4 text-mute">
+    <a class="block hover:text-white" href="#showreel">Showreel</a>
+    <a class="block hover:text-white" href="#work">Work</a>
+    <a class="block hover:text-white" href="#about">About</a>
+    <a class="block text-goldsoft" href="#contact">Get in touch</a>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden grain">
+  <img data-img="hero_img" alt="" class="hidden absolute inset-0 w-full h-full object-cover opacity-35">
+  <canvas id="wave" class="absolute inset-0 w-full h-full" aria-hidden="true"></canvas>
+  <div class="absolute inset-0 bg-gradient-to-b from-ink/30 via-ink/40 to-ink"></div>
+  <div class="relative max-w-6xl mx-auto px-6 pt-28 pb-20 w-full">
+    <p class="text-mute text-sm md:text-base mb-6" data-k="hero_tag">Music Composer · Sound Designer · Producer</p>
+    <h1 data-k="hero_title" class="font-display font-semibold text-5xl sm:text-5xl md:text-7xl leading-[1.05] max-w-4xl">Crafting immersive audio &amp; visual scoring.</h1>
+    <p class="mt-8 max-w-xl text-mute text-lg leading-relaxed" data-k="hero_sub">Original music and sound for film, series, brands and games, rooted in the Middle East and built for the world.</p>
+    <div class="mt-10 flex flex-wrap gap-4">
+      <a href="#work" class="bg-gold text-ink font-semibold px-7 py-3.5 rounded-full hover:bg-goldsoft transition">Explore My Work</a>
+      <a href="#contact" class="border border-white/25 px-7 py-3.5 rounded-full hover:border-gold hover:text-goldsoft transition">Get In Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWREEL -->
+<section id="showreel" class="py-24 px-6">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="font-display text-4xl md:text-5xl" data-k="showreel_title">Featured showreel</h2>
+    <p class="mt-3 text-mute max-w-lg" data-k="showreel_sub">The strongest recent work, cut together in a few minutes.</p>
+
+    <div class="mt-10 relative aspect-video rounded-2xl overflow-hidden border border-line bg-panel" id="reelBox">
+      <img data-img="reel_img" alt="" class="hidden absolute inset-0 w-full h-full object-cover ">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(201,169,106,.22),transparent_60%),radial-gradient(ellipse_at_80%_90%,rgba(107,29,46,.45),transparent_55%)]"></div>
+      <button id="reelPlay" class="absolute inset-0 flex flex-col items-center justify-center gap-4 group" aria-label="Play showreel">
+        <span class="w-20 h-20 rounded-full bg-gold text-ink flex items-center justify-center group-hover:scale-105 transition">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="text-goldsoft">Play showreel</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" class="py-24 px-6 bg-panel/50 border-y border-line">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="font-display text-4xl md:text-5xl" data-k="work_title">Work by discipline</h2>
+    <p class="mt-3 text-mute max-w-lg" data-k="work_sub">Pick a category to hear selected pieces.</p>
+
+    <div id="tabs" role="tablist" aria-label="Work categories" class="mt-10 flex flex-wrap gap-3"></div>
+
+    <div id="panel" role="tabpanel" class="mt-8 grid lg:grid-cols-5 gap-8 items-start">
+      <div class="lg:col-span-2">
+        <h3 id="catTitle" class="font-display text-3xl text-goldsoft"></h3>
+        <p id="catDesc" class="mt-3 text-mute leading-relaxed"></p>
+        <p id="catTags" class="mt-5 text-sm text-mute/80"></p>
+      </div>
+      <ul id="tracks" class="lg:col-span-3 space-y-3"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-24 px-6">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-5 gap-12 items-center">
+    <div class="md:col-span-2 aspect-[4/5] rounded-2xl border border-line overflow-hidden relative bg-panel">
+      <!-- Replace this block with: <img src="your-photo.jpg" class="w-full h-full object-cover" alt="Prodyousif"> -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(201,169,106,.25),transparent_60%)]"></div>
+      <div class="absolute inset-0 flex items-center justify-center font-display text-7xl text-goldsoft/70" id="aboutP">P</div>
+      <img data-img="about_img" alt="" class="hidden absolute inset-0 w-full h-full object-cover ">
+    </div>
+    <div class="md:col-span-3">
+      <h2 class="font-display text-4xl md:text-5xl" data-k="about_title">One studio, every sound a project needs.</h2>
+      <div class="mt-6 space-y-4 text-mute leading-relaxed text-lg max-w-xl">
+        <p data-k="about_p1">I am a composer, producer and sound designer working across Eastern and Western musical worlds. From a full orchestral score to a ten-second brand sting, I treat sound as part of the story, not an add-on.</p>
+        <p data-k="about_p2">I deliver complete audio solutions for films, commercials and records: composition, arrangement, recording, sound design, mixing and mastering, all under one roof.</p>
+      </div>
+      <dl class="mt-10 grid grid-cols-3 gap-6 max-w-md">
+        <div><dt class="text-mute text-sm" data-k="s1l">Experience</dt><dd class="font-display text-4xl text-goldsoft" data-k="s1v">10+ yrs</dd></div>
+        <div><dt class="text-mute text-sm" data-k="s2l">Projects</dt><dd class="font-display text-4xl text-goldsoft" data-k="s2v">150+</dd></div>
+        <div><dt class="text-mute text-sm" data-k="s3l">Languages</dt><dd class="font-display text-4xl text-goldsoft" data-k="s3v">Ar / En</dd></div>
+      </dl>
+      <p class="mt-8 text-sm text-mute" data-k="about_tools">Tools: Logic Pro · Cubase · Pro Tools · Kontakt · Reaper · Wwise / FMOD</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-24 px-6 bg-panel/50 border-t border-line">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-14">
+    <div>
+      <h2 class="font-display text-4xl md:text-5xl" data-k="contact_title">Let’s score your next project.</h2>
+      <p class="mt-4 text-mute max-w-md leading-relaxed" data-k="contact_sub">Tell me what you are making, the timeline and the mood. I usually reply within one working day.</p>
+      <ul class="mt-10 space-y-4">
+        <li><a class="social flex items-center gap-4 text-mute hover:text-goldsoft transition" href="https://soundcloud.com/your-profile" data-href="soundcloud" target="_blank" rel="noopener"><span class="w-10 h-10 rounded-full border border-line flex items-center justify-center text-xs">SC</span>SoundCloud</a></li>
+        <li><a class="social flex items-center gap-4 text-mute hover:text-goldsoft transition" href="https://open.spotify.com/artist/your-id" data-href="spotify" target="_blank" rel="noopener"><span class="w-10 h-10 rounded-full border border-line flex items-center justify-center text-xs">Sp</span>Spotify</a></li>
+        <li><a class="social flex items-center gap-4 text-mute hover:text-goldsoft transition" href="https://youtube.com/@your-channel" data-href="youtube" target="_blank" rel="noopener"><span class="w-10 h-10 rounded-full border border-line flex items-center justify-center text-xs">YT</span>YouTube</a></li>
+        <li><a class="social flex items-center gap-4 text-mute hover:text-goldsoft transition" href="https://discord.gg/your-invite" data-href="discord" target="_blank" rel="noopener"><span class="w-10 h-10 rounded-full border border-line flex items-center justify-center text-xs">Dc</span>Discord</a></li>
+        <li><a class="social flex items-center gap-4 text-mute hover:text-goldsoft transition" href="mailto:hello@yourdomain.com" id="mailLink"><span class="w-10 h-10 rounded-full border border-line flex items-center justify-center text-xs">@</span>hello@yourdomain.com</a></li>
+      </ul>
+    </div>
+
+    <form id="form" class="space-y-5" novalidate>
+      <div>
+        <label for="name" class="block text-sm text-mute mb-2">Name</label>
+        <input id="name" name="name" required class="w-full bg-ink border border-line rounded-lg px-4 py-3 focus:border-gold outline-none transition" autocomplete="name">
+      </div>
+      <div>
+        <label for="email" class="block text-sm text-mute mb-2">Email</label>
+        <input id="email" name="email" type="email" required class="w-full bg-ink border border-line rounded-lg px-4 py-3 focus:border-gold outline-none transition" autocomplete="email">
+      </div>
+      <div>
+        <label for="type" class="block text-sm text-mute mb-2">Project type</label>
+        <select id="type" name="type" class="w-full bg-ink border border-line rounded-lg px-4 py-3 focus:border-gold outline-none transition">
+          <option>Film / Series scoring</option>
+          <option>Commercial / Brand</option>
+          <option>Sound design / Post-production</option>
+          <option>Song production / Beats</option>
+          <option>Middle Eastern / Fusion</option>
+          <option>Game / UI audio</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div>
+        <label for="msg" class="block text-sm text-mute mb-2">Message</label>
+        <textarea id="msg" name="message" rows="5" required class="w-full bg-ink border border-line rounded-lg px-4 py-3 focus:border-gold outline-none transition resize-y"></textarea>
+      </div>
+      <button class="bg-gold text-ink font-semibold px-8 py-3.5 rounded-full hover:bg-goldsoft transition" type="submit">Send message</button>
+      <p id="formMsg" class="text-sm min-h-[1.25rem]" role="status"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-line py-8 px-6 text-center text-sm text-mute">
+  © <span id="yr"></span> <span id="fname">Prodyousif</span>. All music and sound are original work.
+</footer>
+
+<!-- Global toast + sticky mini player -->
+<div id="mini" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 hidden w-[92%] max-w-md bg-panel border border-gold/50 rounded-full px-5 py-3 items-center gap-4 shadow-2xl">
+  <button id="miniBtn" class="w-9 h-9 shrink-0 rounded-full bg-gold text-ink flex items-center justify-center" aria-label="Pause"></button>
+  <div class="min-w-0 flex-1">
+    <div id="miniTitle" class="text-sm truncate"></div>
+    <div class="h-1 bg-line rounded mt-1.5 cursor-pointer" id="miniBar"><div id="miniFill" class="h-full bg-gold rounded w-0"></div></div>
+  </div>
+</div>
+<div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-[120] hidden bg-wine text-white text-sm px-5 py-3 rounded-full"></div>
+
+<script id="siteData" type="application/json">{}</script>
+<script type="module">
+/* ================= CONTENT — edit this section ================= */
+// 1) Showreel: paste your YouTube video ID (e.g. "dQw4w9WgXcQ") or leave empty.
+// Showreel, texts, images and links are edited from the Admin panel: click the "P" of the logo 3 times quickly.
+
+// 2) Categories & tracks. `src` = path/URL to your mp3 (e.g. "audio/dune-theme.mp3").
+const CATEGORIES = [
+  { id:"orchestral", name:"Orchestral & Cinematic Scoring",
+    desc:"Scores and soundtracks for feature films, series and documentaries: from intimate piano themes to full orchestral weight.",
+    tags:"Film · Series · Trailers · Soundtracks",
+    tracks:[ {t:"Main Theme — Title of Film", m:"Orchestra · 3:42", src:""}, {t:"The Long Road", m:"Strings & Piano · 2:58", src:""}, {t:"Final Confrontation", m:"Hybrid Orchestral · 4:10", src:""} ] },
+  { id:"commercial", name:"Commercials & Brand Identities",
+    desc:"Music and sonic logos that make a brand recognisable in seconds, tailored to the product, audience and platform.",
+    tags:"TV Ads · Digital · Sonic Logos · Jingles",
+    tracks:[ {t:"Brand Spot — 60s", m:"Uplifting Pop · 1:00", src:""}, {t:"Sonic Logo Pack", m:"5 variations · 0:08", src:""}, {t:"Product Launch Film", m:"Modern Cinematic · 0:45", src:""} ] },
+  { id:"sfx", name:"Sound Design & Audio Post-Production",
+    desc:"Custom sound effects, ambiences and Foley, plus full audio post for picture: editing, design and final mix.",
+    tags:"SFX · Foley · Ambience · Mixing",
+    tracks:[ {t:"Sci-Fi Atmospheres", m:"Sound design reel · 1:30", src:""}, {t:"Impacts & Risers Collection", m:"Trailer SFX · 0:55", src:""}, {t:"Before / After — Scene Post", m:"Dialogue & Mix · 1:15", src:""} ] },
+  { id:"beats", name:"Modern Beats & Record Production",
+    desc:"Hip-hop, trap and pop productions, from beat to finished record: arrangement, vocal production and mixdown.",
+    tags:"Hip-Hop · Trap · Pop · Mixing & Mastering",
+    tracks:[ {t:"Night Drive", m:"Trap · 140 BPM", src:""}, {t:"Golden Hour", m:"Pop · 98 BPM", src:""}, {t:"Concrete Dreams", m:"Hip-Hop · 90 BPM", src:""} ] },
+  { id:"fusion", name:"Middle Eastern & Hybrid Fusion",
+    desc:"Contemporary Eastern music blended with Western production: oud, ney, qanun and Arabic percussion meeting electronic and orchestral textures.",
+    tags:"Oud · Maqam · Electronic · Orchestral",
+    tracks:[ {t:"Sahara Pulse", m:"Maqam Hijaz · Electronic", src:""}, {t:"Nile at Dusk", m:"Oud & Strings · 3:20", src:""}, {t:"Bab El Shams", m:"Hybrid Fusion · 3:55", src:""} ] },
+  { id:"game", name:"UI / Game Audio",
+    desc:"Interface sounds, gameplay effects and adaptive music, prepared for implementation in Unity, Unreal, Wwise or FMOD.",
+    tags:"UI · Game SFX · Adaptive Music · Implementation",
+    tracks:[ {t:"UI Sound Kit", m:"Clicks, Hovers, Alerts · 0:40", src:""}, {t:"Combat Loop", m:"Adaptive layers · 2:00", src:""}, {t:"Menu Theme", m:"Ambient · 1:45", src:""} ] }
+];
+/* ================================================================ */
+
+const $ = s => document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* ===== SITE DATA (edited by the Admin panel) ===== */
+let SITE={t:{},img:{},href:{},cfg:{},cats:null,pw:''};
+try{ Object.assign(SITE, JSON.parse(document.getElementById('siteData').textContent||'{}')); }catch(e){}
+try{ const d=localStorage.getItem('prodDraft'); if(d) Object.assign(SITE, JSON.parse(d)); }catch(e){}
+function reelId(){ const v=(SITE.cfg.reel||'').trim(); const m=v.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/); return m?m[1]:(/^[\w-]{11}$/.test(v)?v:''); }
+function applySite(){
+  document.querySelectorAll('[data-k]').forEach(e=>{ const v=SITE.t[e.dataset.k]; if(v!=null) e.textContent=v; });
+  document.querySelectorAll('[data-href]').forEach(e=>{ const v=SITE.href[e.dataset.href]; if(v) e.href=v; });
+  document.querySelectorAll('[data-img]').forEach(e=>{ const v=SITE.img[e.dataset.img]; if(v){ e.src=v; e.classList.remove('hidden'); } else { e.removeAttribute('src'); e.classList.add('hidden'); } });
+  const ap=$('#aboutP'); if(ap) ap.classList.toggle('hidden',!!SITE.img.about_img);
+  const n=SITE.t.name||'Prodyousif'; $('#logo').innerHTML='<span id="adminKey">'+esc(n[0])+'</span>'+esc(n.slice(1)); $('#fname').textContent=n;
+  document.title=n+' — Composer, Sound Designer & Producer';
+  const em=SITE.cfg.email, ml=$('#mailLink'); if(em){ ml.href='mailto:'+em; ml.lastChild.textContent=em; }
+}
+applySite();
+function save(){ try{ localStorage.setItem('prodDraft',JSON.stringify(SITE)); }catch(e){ toast('Draft is too big for this browser. Download the site now to keep your changes.'); } }
+const PLAY = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+const PAUSE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+const audio = new Audio(); let current = null;
+
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.remove('hidden'); clearTimeout(toast.id); toast.id=setTimeout(()=>t.classList.add('hidden'),2800); }
+
+/* Tabs */
+const tabs = $('#tabs');
+let CATS=SITE.cats||CATEGORIES;
+function buildTabs(){ tabs.innerHTML=''; CATS.forEach((c,i)=>{
+  const b=document.createElement('button');
+  b.className='tab border border-line rounded-full px-5 py-2.5 text-sm text-mute hover:text-white hover:border-gold/60 transition';
+  b.setAttribute('role','tab'); b.textContent=c.name; b.dataset.i=i;
+  b.addEventListener('click',()=>showCat(i)); tabs.appendChild(b);
+}); }
+function showCat(i){
+  const c=CATS[i];
+  [...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected', j===i));
+  $('#catTitle').textContent=c.name; $('#catDesc').textContent=c.desc; $('#catTags').textContent=c.tags;
+  const ul=$('#tracks'); ul.innerHTML='';
+  c.tracks.forEach(tr=>{
+    const li=document.createElement('li');
+    li.className='track flex items-center gap-4 bg-panel border border-line rounded-xl px-4 py-3.5 transition';
+    li.innerHTML=`<button class="pbtn w-10 h-10 shrink-0 rounded-full border border-gold/60 text-goldsoft flex items-center justify-center hover:bg-gold hover:text-ink transition" aria-label="Play ${tr.t}">${PLAY}</button>
+      <div class="min-w-0 flex-1"><div class="truncate">${tr.t}</div><div class="text-xs text-mute mt-0.5">${tr.m}</div></div>
+      <div class="hidden sm:flex items-end gap-[3px] h-5" aria-hidden="true">${[8,14,10,18,12,16,9].map(h=>`<span class="bar w-[3px] rounded bg-line" style="height:${h}px"></span>`).join('')}</div>`;
+    li.querySelector('.pbtn').addEventListener('click',()=>playTrack(tr,li));
+    ul.appendChild(li);
+  });
+}
+function playTrack(tr,li){
+  if(current && current.tr===tr){ audio.paused ? audio.play() : audio.pause(); return; }
+  if(!tr.src){ toast('Add your audio file path in the CATEGORIES list (src).'); return; }
+  document.querySelectorAll('.track.playing').forEach(e=>{e.classList.remove('playing'); e.querySelector('.pbtn').innerHTML=PLAY;});
+  current={tr,li}; audio.src=tr.src; audio.play().catch(()=>toast('Could not load this audio file.'));
+  li.classList.add('playing'); $('#miniTitle').textContent=tr.t; $('#mini').classList.remove('hidden'); $('#mini').classList.add('flex');
+}
+audio.addEventListener('play',()=>{ if(!current) return; current.li.querySelector('.pbtn').innerHTML=PAUSE; $('#miniBtn').innerHTML=PAUSE; });
+audio.addEventListener('pause',()=>{ if(!current) return; current.li.querySelector('.pbtn').innerHTML=PLAY; $('#miniBtn').innerHTML=PLAY; });
+audio.addEventListener('ended',()=>{ if(!current) return; current.li.classList.remove('playing'); $('#mini').classList.add('hidden'); $('#mini').classList.remove('flex'); current=null; });
+audio.addEventListener('timeupdate',()=>{ if(audio.duration) $('#miniFill').style.width=(audio.currentTime/audio.duration*100)+'%'; });
+$('#miniBtn').addEventListener('click',()=>audio.paused?audio.play():audio.pause());
+$('#miniBar').addEventListener('click',e=>{ const r=e.currentTarget.getBoundingClientRect(); if(audio.duration) audio.currentTime=(e.clientX-r.left)/r.width*audio.duration; });
+buildTabs(); showCat(0);
+
+/* Showreel */
+$('#reelPlay').addEventListener('click',()=>{
+  if(!reelId()){ toast('Add your YouTube link from the Admin panel (Settings) to enable the video.'); return; }
+  $('#reelBox').innerHTML=`<iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/${reelId()}?autoplay=1&rel=0" title="Showreel" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+});
+
+/* Nav: solid on scroll, mobile menu, active link */
+const nav=$('#nav');
+const onScroll=()=>nav.classList.toggle('bg-ink/90',scrollY>40)||nav.classList.toggle('backdrop-blur',scrollY>40);
+addEventListener('scroll',onScroll,{passive:true}); onScroll();
+const mb=$('#menuBtn'), mm=$('#mobileMenu');
+mb.addEventListener('click',()=>{ const o=mm.classList.toggle('hidden'); mb.setAttribute('aria-expanded',String(!o)); });
+mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mm.classList.add('hidden');mb.setAttribute('aria-expanded','false');}));
+const links=[...document.querySelectorAll('.nav-link')];
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id)); }),{rootMargin:'-45% 0px -50% 0px'});
+['showreel','work','about'].forEach(id=>io.observe(document.getElementById(id)));
+
+/* Contact form — works with Formspree: set (SITE.cfg.formEndpoint||''), otherwise falls back to mailto */
+$('#form').addEventListener('submit',async e=>{
+  e.preventDefault(); const f=e.target, m=$('#formMsg'); const d=Object.fromEntries(new FormData(f));
+  if(!d.name||!/^\S+@\S+\.\S+$/.test(d.email||'')||!d.message){ m.className='text-sm text-red-400'; m.textContent='Please fill in your name, a valid email and a message.'; return; }
+  if((SITE.cfg.formEndpoint||'')){
+    try{ const r=await fetch((SITE.cfg.formEndpoint||''),{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(d)});
+      if(!r.ok) throw 0; m.className='text-sm text-goldsoft'; m.textContent='Message sent. I will reply soon.'; f.reset(); }
+    catch{ m.className='text-sm text-red-400'; m.textContent='Could not send. Please email me directly.'; }
+  } else {
+    location.href=`mailto:${(SITE.cfg.email||'hello@yourdomain.com')}?subject=${encodeURIComponent('['+d.type+'] '+d.name)}&body=${encodeURIComponent(d.message+'\n\n'+d.email)}`;
+    m.className='text-sm text-goldsoft'; m.textContent='Opening your email app…';
+  }
+});
+$('#yr').textContent=new Date().getFullYear();
+
+/* Hero waveform */
+(()=>{
+  const cv=$('#wave'), ctx=cv.getContext('2d'); let w,h,t=0;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){ const r=devicePixelRatio||1; w=cv.clientWidth; h=cv.clientHeight; cv.width=w*r; cv.height=h*r; ctx.setTransform(r,0,0,r,0,0); }
+  function draw(){
+    ctx.clearRect(0,0,w,h); const n=Math.floor(w/9), mid=h*0.62;
+    for(let i=0;i<n;i++){
+      const x=i*9+4, p=i/n;
+      const a=(Math.sin(p*9+t)*0.5+Math.sin(p*23-t*1.6)*0.3+Math.sin(p*3+t*.6)*0.4);
+      const env=Math.sin(p*Math.PI);
+      const bh=Math.max(2,Math.abs(a)*env*h*0.28+3);
+      ctx.fillStyle=`rgba(201,169,106,${0.12+env*0.38})`;
+      ctx.fillRect(x,mid-bh,3,bh*2);
+    }
+    if(!reduce){ t+=0.012; requestAnimationFrame(draw); }
+  }
+  addEventListener('resize',()=>{size(); if(reduce) draw();}); size(); draw();
+})();
+
+/* ===== ADMIN PANEL (click the "P" of the logo 3 times) ===== */
+let admTab='t'; const LBL={hero_tag:'Hero: small tagline',hero_title:'Hero: main headline',hero_sub:'Hero: description',showreel_title:'Showreel: title',showreel_sub:'Showreel: subtitle',work_title:'Work: title',work_sub:'Work: subtitle',about_title:'About: title',about_p1:'About: paragraph 1',about_p2:'About: paragraph 2',about_tools:'About: tools line',s1l:'Stat 1: label',s1v:'Stat 1: value',s2l:'Stat 2: label',s2v:'Stat 2: value',s3l:'Stat 3: label',s3v:'Stat 3: value',contact_title:'Contact: title',contact_sub:'Contact: text'};
+async function H(s){ s='prodyousif::'+s; try{ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }catch(e){ let h=5381; for(const c of s) h=((h<<5)+h+c.charCodeAt(0))|0; return 'x'+h; } }
+function compress(file,max=1600){ return new Promise(res=>{ const r=new FileReader(); r.onload=()=>{ const im=new Image(); im.onload=()=>{ const k=Math.min(1,max/Math.max(im.width,im.height)); const c=document.createElement('canvas'); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k); c.getContext('2d').drawImage(im,0,0,c.width,c.height); res(c.toDataURL('image/jpeg',0.82)); }; im.src=r.result; }; r.readAsDataURL(file); }); }
+function download(){
+  const data=JSON.stringify(SITE).replace(/</g,'\\u003c');
+  const html=window.__SRC.replace(/(<script id="siteData"[^>]*>)[\s\S]*?(<\/script>)/,(m,a,b)=>a+data+b);
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([html],{type:'text/html'})); a.download='index.html'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  try{ localStorage.removeItem('prodDraft'); }catch(e){}
+  toast('Downloaded index.html. Upload it to your host to publish.');
+}
+function cats(){ SITE.cats=CATS; save(); const a=Math.max(0,[...tabs.children].findIndex(b=>b.getAttribute('aria-selected')==='true')); buildTabs(); showCat(Math.min(a,CATS.length-1)); }
+const fld=(s,label,val,area)=>'<label class="lbl">'+label+'</label>'+(area?'<textarea class="inp" rows="'+(Math.min(6,Math.ceil(String(val).length/42))||1)+'" data-s="'+s+'">'+esc(val)+'</textarea>':'<input class="inp" data-s="'+s+'" value="'+esc(val)+'">');
+function vText(){ return [...document.querySelectorAll('[data-k]')].map(e=>fld('t.'+e.dataset.k,LBL[e.dataset.k]||e.dataset.k,e.textContent.trim(),true)).join(''); }
+function vImg(){ const S=[['hero_img','Hero background (a dark, moody photo works best)'],['about_img','About photo'],['reel_img','Showreel cover image']];
+  return S.map(([k,n])=>'<div class="mb-5"><label class="lbl">'+n+'</label>'+(SITE.img[k]?'<img src="'+SITE.img[k]+'" class="h-28 rounded-lg mb-3 border border-line" alt="">':'')+'<input type="file" accept="image/*" data-img-pick="'+k+'" class="text-sm text-mute">'+(SITE.img[k]?'<button data-act="rmimg" data-v="'+k+'" class="btn2 ml-2 mt-2">Remove</button>':'')+'</div>').join('')+'<p class="text-xs text-mute">Images are resized automatically and stored inside the site file.</p>'; }
+function vWork(){ return CATS.map((c,i)=>'<div class="border border-line rounded-xl p-4 mb-5"><label class="lbl" style="margin-top:0">Category name</label><input class="inp" data-c="'+i+'" data-f="name" value="'+esc(c.name)+'"><label class="lbl">Description</label><textarea class="inp" rows="3" data-c="'+i+'" data-f="desc">'+esc(c.desc)+'</textarea><label class="lbl">Tags</label><input class="inp" data-c="'+i+'" data-f="tags" value="'+esc(c.tags)+'"><p class="lbl" style="margin-top:20px">Tracks</p>'
+  +c.tracks.map((t,j)=>'<div class="bg-ink rounded-lg p-3 mb-3"><input class="inp mb-2" placeholder="Track title" data-c="'+i+'" data-i="'+j+'" data-f="t" value="'+esc(t.t)+'"><input class="inp mb-2" placeholder="Short description" data-c="'+i+'" data-i="'+j+'" data-f="m" value="'+esc(t.m)+'"><input class="inp mb-2" placeholder="audio/file.mp3" data-c="'+i+'" data-i="'+j+'" data-f="src" value="'+esc(t.src)+'"><div class="flex items-center justify-between"><label class="btn2 cursor-pointer text-sm">Choose audio file<input type="file" accept="audio/*" class="hidden" data-pick data-c="'+i+'" data-i="'+j+'"></label><button data-act="rmtrack" data-c="'+i+'" data-i="'+j+'" class="text-sm text-red-400">Remove</button></div></div>').join('')
+  +'<button data-act="addtrack" data-c="'+i+'" class="btn2">+ Add track</button><button data-act="rmcat" data-c="'+i+'" class="text-sm text-red-400 ml-4">Delete category</button></div>').join('')+'<button data-act="addcat" class="btn">+ Add category</button>'; }
+function vSet(){ const hs=[...document.querySelectorAll('[data-href]')].map(e=>fld('href.'+e.dataset.href,e.dataset.href[0].toUpperCase()+e.dataset.href.slice(1)+' link',e.getAttribute('href'))).join('');
+  return fld('t.name','Your name (logo, intro, footer)',SITE.t.name||'Prodyousif')+fld('cfg.email','Contact email',SITE.cfg.email||'hello@yourdomain.com')+fld('cfg.reel','Showreel: YouTube link',SITE.cfg.reel||'')+fld('cfg.formEndpoint','Contact form: Formspree link (optional)',SITE.cfg.formEndpoint||'')+hs+'<label class="lbl">New admin password</label><input id="npw" type="password" class="inp" autocomplete="new-password"><button data-act="pw" class="btn2 mt-3">Change password</button>'; }
+function draw(){ const T=[['t','Text'],['i','Images'],['w','Work'],['s','Settings']];
+  $('#admBody').innerHTML='<div class="flex gap-2 mb-5 flex-wrap">'+T.map(([k,n])=>'<button data-act="tab" data-v="'+k+'" class="'+(admTab===k?'btn':'btn2')+'">'+n+'</button>').join('')+'</div>'+({t:vText,i:vImg,w:vWork,s:vSet}[admTab])();
+  $('#admFoot').innerHTML='<button data-act="dl" class="btn w-full">Download updated site (index.html)</button><p class="text-xs text-mute mt-3 leading-relaxed">Edits are kept as a draft in this browser. To make them live, download the file and upload it again to your host.</p><button data-act="reset" class="text-xs text-mute underline mt-2">Discard draft and reload</button>'; }
+function login(){ const first=!SITE.pw; $('#admFoot').innerHTML='';
+  $('#admBody').innerHTML='<p class="text-mute mb-4">'+(first?'First time: create a password for this panel (6+ characters) and keep it somewhere safe.':'Enter your admin password.')+'</p><input id="pw" type="password" class="inp" autocomplete="'+(first?'new-password':'current-password')+'"><button id="pwGo" class="btn mt-4">'+(first?'Create password':'Unlock')+'</button><p id="pwErr" class="text-red-400 text-sm mt-3"></p>';
+  const go=async()=>{ const v=$('#pw').value; if(first){ if(v.length<6){ $('#pwErr').textContent='Use at least 6 characters.'; return; } SITE.pw=await H(v); save(); draw(); } else if(await H(v)===SITE.pw){ draw(); } else { await new Promise(r=>setTimeout(r,800)); $('#pwErr').textContent='Wrong password.'; } };
+  $('#pwGo').onclick=go; $('#pw').onkeydown=e=>{ if(e.key==='Enter') go(); }; $('#pw').focus(); }
+function openAdmin(){ if($('#adm')) return;
+  const w=document.createElement('div'); w.id='adm'; w.className='fixed inset-0 z-[90] bg-black/70 flex justify-end';
+  w.innerHTML='<div class="w-full sm:w-[460px] h-full bg-panel border-l border-line flex flex-col"><div class="flex items-center justify-between px-5 py-4 border-b border-line"><b class="text-goldsoft font-logo tracking-widest">ADMIN</b><button data-act="x" class="text-mute hover:text-white text-3xl leading-none" aria-label="Close">×</button></div><div id="admBody" class="flex-1 overflow-y-auto p-5"></div><div id="admFoot" class="border-t border-line p-4"></div></div>';
+  document.body.appendChild(w);
+  w.oninput=e=>{ const d=e.target.dataset;
+    if(d.s){ const [g,...r]=d.s.split('.'); SITE[g][r.join('.')]=e.target.value; save(); applySite(); }
+    else if(d.c!=null&&d.f){ const c=CATS[+d.c]; if(d.i!=null) c.tracks[+d.i][d.f]=e.target.value; else c[d.f]=e.target.value; cats(); } };
+  w.onchange=async e=>{ const t=e.target, d=t.dataset; if(!t.files||!t.files[0]) return;
+    if(d.imgPick){ SITE.img[d.imgPick]=await compress(t.files[0]); save(); applySite(); draw(); }
+    else if(d.pick!==undefined){ CATS[+d.c].tracks[+d.i].src='audio/'+t.files[0].name; cats(); draw(); toast('Remember to copy '+t.files[0].name+' into the "audio" folder next to index.html'); } };
+  w.onclick=async e=>{ if(e.target===w){ w.remove(); return; } const b=e.target.closest('[data-act]'); if(!b) return; const d=b.dataset, a=d.act;
+    if(a==='x') w.remove();
+    else if(a==='tab'){ admTab=d.v; draw(); }
+    else if(a==='dl') download();
+    else if(a==='reset'){ if(confirm('Discard all edits that were not downloaded?')){ try{ localStorage.removeItem('prodDraft'); }catch(x){} location.reload(); } }
+    else if(a==='rmimg'){ delete SITE.img[d.v]; save(); applySite(); draw(); }
+    else if(a==='addtrack'){ CATS[+d.c].tracks.push({t:'New track',m:'Description',src:''}); cats(); draw(); }
+    else if(a==='rmtrack'){ CATS[+d.c].tracks.splice(+d.i,1); cats(); draw(); }
+    else if(a==='addcat'){ CATS.push({id:'c'+Date.now(),name:'New category',desc:'Describe this category.',tags:'',tracks:[{t:'New track',m:'Description',src:''}]}); cats(); draw(); }
+    else if(a==='rmcat'){ if(CATS.length>1&&confirm('Delete this category?')){ CATS.splice(+d.c,1); cats(); draw(); } }
+    else if(a==='pw'){ const v=$('#npw').value; if(v.length<6){ toast('Use at least 6 characters.'); return; } SITE.pw=await H(v); save(); $('#npw').value=''; toast('Password changed. Download the site to keep it.'); } };
+  login(); }
+let ck=[]; $('#logo').addEventListener('click',e=>{ if(e.target.id!=='adminKey') return; const n=Date.now(); ck=ck.filter(t=>n-t<1500); ck.push(n); if(ck.length>=3){ ck=[]; e.preventDefault(); openAdmin(); } });
+
+/* ===== INTRO ANIMATION ===== */
+(()=>{
+  const intro=document.getElementById('intro'); if(!intro) return;
+  let seen=false; try{ seen=sessionStorage.getItem('introSeen')==='1'; }catch(e){}
+  if(seen){ intro.remove(); return; }              // show once per visit session
+  const name=document.getElementById('introName');
+  [...(SITE.t.name||'Prodyousif').toUpperCase()].forEach((c,i)=>{ const sp=document.createElement('span'); sp.className='ch'; sp.style.setProperty('--i',i); sp.textContent=c; name.appendChild(sp); });
+  const eq=document.getElementById('ieq');
+  for(let k=0;k<36;k++){ const b=document.createElement('i'); b.style.setProperty('--k',k); b.style.setProperty('--h',(0.15+Math.abs(Math.sin(k*0.7))*0.85).toFixed(2)); b.style.opacity=(0.35+Math.sin(k/36*Math.PI)*0.65).toFixed(2); eq.appendChild(b); }
+  document.documentElement.style.overflow='hidden';
+  let done=false;
+  const close=()=>{ if(done) return; done=true; try{sessionStorage.setItem('introSeen','1');}catch(e){}
+    intro.classList.add('out'); document.documentElement.style.overflow=''; setTimeout(()=>intro.remove(),1000); };
+  setTimeout(close,4200);                          // intro length in ms
+  document.getElementById('introSkip').addEventListener('click',close);
+})();
+</script>
+<script>window.__SRC="<!DOCTYPE html>\n"+(function(){var c=document.documentElement.cloneNode(true);c.querySelectorAll("head style:not(#mine)").forEach(function(e){e.remove();});return c.outerHTML;})();</script>
+</body>
+</html>
